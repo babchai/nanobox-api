@@ -63,7 +63,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
                 "id": 2,
                 "num": 14
             }]}};
-
+            console.log("send Message " , openDoor);
             sockets[random].soc.sendMessage(openDoor);
         }
     }, 5000);
@@ -88,12 +88,12 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     // //     });
     // });
 
-    // socket.on('error', function(err)
-    // {
-    //     socket.sendMessage("s");
-    //     console.log("error", err)
-    //    // socket.emit('end');
-    // });
+    socket.on('error', function(err)
+    {
+        socket.sendMessage("s");
+        console.log("error", err)
+       // socket.emit('end');
+    });
 
     // socket.on('end', function()
     // {
