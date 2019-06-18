@@ -15,10 +15,11 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     socket = new JsonSocket(socket); //Now we've decorated the net.Socket to be a JsonSocket
     //sockets.push(socket);
 
-    console.log("incoming" , socket)
+    console.log("incoming")
   // console.log("incoming sockets " , sockets);
     socket.on('data', data=>{
         let dataJson = JSON.parse(data.toString())
+	console.log(dataJson);
         console.log("dataJson ==> " , dataJson.data.dev_name)
         var successResp = { "code":0,"msg":"connect success","data":{}}
         socket.sendMessage(successResp);
