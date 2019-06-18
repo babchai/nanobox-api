@@ -18,12 +18,18 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     console.log("incoming")
   // console.log("incoming sockets " , sockets);
     socket.on('data', data=>{
-        let dataJson = JSON.parse(data.toString())
-	console.log(dataJson);
-        console.log("dataJson ==> " , dataJson.data.dev_name)
-        var successResp = { "code":0,"msg":"connect success","data":{}}
-        socket.sendMessage(successResp);
-        sockets.push({'soc':socket , 'data' : dataJson.data})
+
+        try{
+            let dataJson = JSON.parse(data.toString())
+            console.log("incoming data ==> " , dataJson)
+            //console.log("dataJson ==> " , dataJson.data.dev_name)
+            var successResp = { "code":0,"msg":"connect success","data":{}}
+            socket.sendMessage(successResp);
+            sockets.push({'soc':socket , 'data' : dataJson.data})
+        }catch(e){
+            console.log(e);
+        }
+
     })
     
     // sockets.forEach((soc , i) =>  {
