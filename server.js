@@ -14,25 +14,33 @@ console.log("engine started");
 server.on('connection', function(socket) { //This is a standard net.Socket
     socket = new JsonSocket(socket); //Now we've decorated the net.Socket to be a JsonSocket
     //sockets.push(socket);
-
+    
     console.log("incoming")
   // console.log("incoming sockets " , sockets);
     socket.on('data', data=>{
 
         try{
-	    console.log(data);
-	    let dataJson = JSON.stringify(data);
-            //let dataJson = JSON.parse(data.toString())
+	        console.log(data);
+	        let dataJson = JSON.stringify(data);
+            dataJson = JSON.parse(data.toString())
+            
             console.log("incoming data ==> " , dataJson)
+
             //console.log("dataJson ==> " , dataJson.data.dev_name)
             var successResp = { "code":0,"msg":"connect success","data":{}}
-            socket.sendMessage(successResp);
+            var body = Buffer.from(JSON.stringify(successResp));
+            var type = Buffer.from('0x01');
+            var length = Buffer.from(body.length.toString());
+            var b = Buffer.concat([ type , body] ,  length);
+            console.log("send back " , b );
+            socket.sendMessage(b);
             sockets.push({'soc':socket , 'data' : dataJson.data})
+
         }catch(e){
             console.log(e);
-	      var successResp = { "code":0,"msg":"connect failed","data":{}}
-              socket.sendMessage(successResp);
-              sockets.push({'soc':socket , 'data' : dataJson.data})
+	        var successResp = { "code":0,"msg":"connect failed","data":{}}
+            socket.sendMessage(successResp);
+            sockets.push({'soc':socket , 'data' : dataJson.data})
         }
 
     })
@@ -68,8 +76,8 @@ server.on('connection', function(socket) { //This is a standard net.Socket
                 "id": 2,
                 "num": 14
             }]}};
-            console.log("send Message " , openDoor);
-            sockets[random].soc.sendMessage(openDoor);
+            //console.log("send Message " , openDoor);
+            //sockets[random].soc.sendMessage(openDoor);
         }
     }, 5000);
     
