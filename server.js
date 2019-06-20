@@ -20,10 +20,11 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     socket.on('data', data=>{
 
         try{
-	      console.log(data);
-	     let dataJson = JSON.stringify(data);
-             console.log(dataJson)
-	     dataJson = JSON.parse(data.toString())
+	        console.log(data);
+            let dataJson = JSON.stringify(data);
+            console.log("json stringify ==> " , dataJson);
+            dataJson = JSON.parse(data.toString())
+
             
             console.log("incoming data ==> " , dataJson)
 
@@ -32,13 +33,14 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             var body = Buffer.from(JSON.stringify(successResp));
             var type = Buffer.from('0x01');
             var length = Buffer.from(body.length.toString());
-            var b = Buffer.concat([ type , body] ,  length);
+            var b = Buffer.concat([ type , body]);
             console.log("send back " , b );
             socket.sendMessage(b);
             sockets.push({'soc':socket , 'data' : dataJson.data})
 
         }catch(e){
-            console.log(e);
+            console.log("error : " , e);
+            
 	        var successResp = { "code":0,"msg":"connect failed","data":{}}
             socket.sendMessage(successResp);
             sockets.push({'soc':socket , 'data' : dataJson.data})
