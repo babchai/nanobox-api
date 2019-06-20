@@ -20,9 +20,10 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     socket.on('data', data=>{
 
         try{
-	        console.log(data);
-	        let dataJson = JSON.stringify(data);
-            dataJson = JSON.parse(data.toString())
+	      console.log(data);
+	     let dataJson = JSON.stringify(data);
+             console.log(dataJson)
+	     dataJson = JSON.parse(data.toString())
             
             console.log("incoming data ==> " , dataJson)
 
