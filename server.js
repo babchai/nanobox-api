@@ -40,7 +40,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
             var body = '{ "code":0,"msg":"connect success","data":{}}'
             
-            socket.sendMessage(body.length+" "+"01"+" "+body);
+            socket.sendMessage(body);
 
             var bodyBuff = Buffer.from(JSON.stringify(successResp));
 
