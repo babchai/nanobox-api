@@ -1,6 +1,8 @@
 var net = require('net');
 var url = require('url');
 var _ = require('lodash');
+const hex2ascii = require('hex2ascii')
+const arrayBufferToHex = require('array-buffer-to-hex')
 
 var JsonSocket = require('json-socket');
 
@@ -20,30 +22,50 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     socket.on('data', data=>{
 
         try{
-	        console.log(data);
-            let dataJson = JSON.stringify(data);
-            console.log("json stringify ==> " , dataJson);
-            dataJson = JSON.parse(data.toString())
+            console.log("incoming buffer ==>", data);
+            var hex = arrayBufferToHex(data)
+            console.log("incoming Hex before substr(4) ==> " , hex)
+            hex = hex.substr(8)
+            console.log("incoming Hex ==> " , hex)
 
+            var ascii =   hex2ascii(hex);
+            console.log("incoming ascii ==> " , ascii);
+            //j = JSON.parse(ascii);
+            let dataJson = JSON.stringify(ascii);
+            console.log("json stringify ==> " , dataJson);
             
-            console.log("incoming data ==> " , dataJson)
 
             //console.log("dataJson ==> " , dataJson.data.dev_name)
             var successResp = { "code":0,"msg":"connect success","data":{}}
-            var body = Buffer.from(JSON.stringify(successResp));
-            var type = Buffer.from('0x01');
-            var length = Buffer.from(body.length.toString());
-            var b = Buffer.concat([ type , body]);
+
+            var body = '{ "code":0,"msg":"connect success","data":{}}'
+            
+            socket.sendMessage(body.length+" "+"01"+" "+body);
+
+            var bodyBuff = Buffer.from(JSON.stringify(successResp));
+
+            var type = Buffer.from('01');
+            var length = Buffer.from(JSON.stringify(body).length.toString());
+            var b = Buffer.concat([length, type , bodyBuff]);
             console.log("send back " , b );
             socket.sendMessage(b);
-            sockets.push({'soc':socket , 'data' : dataJson.data})
+           // sockets.push({'soc':socket , 'data' : dataJson.data})
 
         }catch(e){
             console.log("error : " , e);
-            
-	        var successResp = { "code":0,"msg":"connect failed","data":{}}
-            socket.sendMessage(successResp);
-            sockets.push({'soc':socket , 'data' : dataJson.data})
+
+            var body = { "code":0,"msg":"connect failed","data":{}}
+            var length = JSON.stringify(body).length.toString()
+            socket.sendMessage(length+" "+"01"+" "+JSON.stringify(body));
+
+            var bodyBuff = Buffer.from(JSON.stringify(body));
+            var type = Buffer.from('01');
+            var length = Buffer.from((JSON.stringify(body).length+2).toString());
+            var b = Buffer.concat([length, type , bodyBuff]);
+            console.log("send back " , b );
+            socket.sendMessage(b);
+
+           // sockets.push({'soc':socket , 'data' : dataJson.data})
         }
 
     })
@@ -56,6 +78,17 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     //         soc.sendMessage({C:1,D:2});
     //     })
     // });
+
+    function bin2String(array) {
+        var result = "";
+        //console.log(array);
+        for (var i = 0; i < array.length; i++) {
+          result += String.fromCharCode(parseInt(array[i], 2));
+          //console.log(array[i] , result);
+        }
+        console.log("bin2String ==> " , result);
+        return result;
+      }
 
     setInterval(function() {  
         //return console.log(cue);
