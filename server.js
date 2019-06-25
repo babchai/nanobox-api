@@ -26,7 +26,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             var hex = arrayBufferToHex(data)
             console.log("incoming Hex before substr(4) ==> " , hex)
 
-            socket.sendMessage(hex);
+            //socket.sendMessage(hex);
 
             hex = hex.substr(8)
             console.log("incoming Hex ==> " , hex)
@@ -57,7 +57,10 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
              //var bodyBuff = Buffer.from(body);
              
-            socket.sendMessage(bodyBuff);
+            //var buf = Buffer.from(body, 'utf-8');
+            body.split('')
+            socket.sendMessage(body);
+            //socket.sendMessage(bodyBuff);
 
             // var bodyBuff = Buffer.from(JSON.stringify(successResp));
 
