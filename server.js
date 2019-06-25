@@ -2,6 +2,7 @@ var net = require('net');
 var url = require('url');
 var _ = require('lodash');
 const hex2ascii = require('hex2ascii')
+
 const arrayBufferToHex = require('array-buffer-to-hex')
 
 var JsonSocket = require('json-socket');
@@ -42,6 +43,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             var successResp = { "code":0,"msg":"connect success","data":{}}
             var length = Object.keys(successResp).length +2;
             console.log(length);
+
             var body = '{ "code":0,"msg":"connect success","data":{}}'
 
             var bodyBuff = new Buffer(255);
@@ -58,10 +60,14 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             bodyBuff.write(body);
 
              //var bodyBuff = Buffer.from(body);
-             
-            //var buf = Buffer.from(body, 'utf-8');
-           var ar =  body.split('')
-            socket.sendMessage(ar);
+
+            var body = '{"code":0,"msg":"connect success","data":{}}'
+            
+          
+           var newHex =  Buffer.from(body, 'utf8').toString('hex');
+
+            socket.sendMessage(newHex);
+
             //socket.sendMessage(bodyBuff);
 
             // var bodyBuff = Buffer.from(JSON.stringify(successResp));
