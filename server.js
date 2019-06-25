@@ -60,8 +60,8 @@ server.on('connection', function(socket) { //This is a standard net.Socket
              //var bodyBuff = Buffer.from(body);
              
             //var buf = Buffer.from(body, 'utf-8');
-            body.split('')
-            socket.sendMessage(body);
+           var ar =  body.split('')
+            socket.sendMessage(ar);
             //socket.sendMessage(bodyBuff);
 
             // var bodyBuff = Buffer.from(JSON.stringify(successResp));
