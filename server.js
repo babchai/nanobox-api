@@ -25,6 +25,9 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             console.log("incoming buffer ==>", data);
             var hex = arrayBufferToHex(data)
             console.log("incoming Hex before substr(4) ==> " , hex)
+
+            //socket.sendMessage(hex);
+
             hex = hex.substr(8)
             console.log("incoming Hex ==> " , hex)
 
@@ -37,18 +40,39 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
             //console.log("dataJson ==> " , dataJson.data.dev_name)
             var successResp = { "code":0,"msg":"connect success","data":{}}
-
+            var length = Object.keys(successResp).length +2;
+            console.log(length);
             var body = '{ "code":0,"msg":"connect success","data":{}}'
-            
+
+            var bodyBuff = new Buffer(255);
+            var len1 = splitNumber(length)[0].toString();
+            var len2 = splitNumber(length)[0].toString();
+
+
+            bodyBuff.write(len1) //length
+            bodyBuff.write(len2) //length
+
+            bodyBuff.write('0'); //type
+            bodyBuff.write('1'); //type
+
+            bodyBuff.write(body);
+
+             //var bodyBuff = Buffer.from(body);
+             
+            //var buf = Buffer.from(body, 'utf-8');
+            body.split('')
             socket.sendMessage(body);
+            //socket.sendMessage(bodyBuff);
 
-            var bodyBuff = Buffer.from(JSON.stringify(successResp));
+            // var bodyBuff = Buffer.from(JSON.stringify(successResp));
 
-            var type = Buffer.from('01');
-            var length = Buffer.from(JSON.stringify(body).length.toString());
-            var b = Buffer.concat([length, type , bodyBuff]);
-            console.log("send back " , b );
-            socket.sendMessage(b);
+            // var type = Buffer.from('01');
+            // var length = Buffer.from(JSON.stringify(body).length.toString());
+            // var b = Buffer.concat([bodyBuff], JSON.stringify(body).length+2);
+        
+            // console.log("send back " , b );
+
+            // socket.sendMessage(b);
            // sockets.push({'soc':socket , 'data' : dataJson.data})
 
         }catch(e){
@@ -78,6 +102,16 @@ server.on('connection', function(socket) { //This is a standard net.Socket
     //         soc.sendMessage({C:1,D:2});
     //     })
     // });
+
+    function splitNumber(number){
+        sNumber = number.toString();
+        output = [];
+
+        for (var i = 0, len = sNumber.length; i < len; i += 1) {
+            output.push(+sNumber.charAt(i));
+        }
+        return output;
+    }
 
     function bin2String(array) {
         var result = "";
