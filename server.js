@@ -17,7 +17,9 @@ var sockets = [];
 // {"code": 0,"msg":"","data":{"dev_name":"test2","num": 16}}
 console.log("engine started");
 server.on('connection', function(socket) { //This is a standard net.Socket
-    socket = new JsonSocket(socket); //Now we've decorated the net.Socket to be a JsonSocket
+//    socket = new JsonSocket(socket); //Now we've decorated the net.Socket to be a JsonSocket
+
+  //  socket2 = new socket(socket);
     //sockets.push(socket);
     
     console.log("incoming")
@@ -50,7 +52,8 @@ server.on('connection', function(socket) { //This is a standard net.Socket
           
            var newHex =  Buffer.from(body, 'utf8').toString('hex');
            var newBin = conv(body, { out:'bytes' })
-            socket.sendMessage(newBin);
+           // socket.sendMessage(newHex);
+            socket.write(newHex);
            // socket.write(newBin);
             //socket.sendMessage(bodyBuff);
 
