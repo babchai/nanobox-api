@@ -51,14 +51,15 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             
           
            var newHex =  Buffer.from(body, 'utf8').toString('hex');
-           var newBin = conv(body, { out:'bytes' })
+          // var newBin = conv(body, { out:'bytes' })
            // socket.sendMessage(newHex);
+           var b = Buffer.from(body , 'utf-8');
             
             console.log("send back hex" , newHex );
             socket.write(newHex);
 
-            console.log("send back bin" , newHex );
-            socket.write(newBin);
+            console.log("send back bin" , b );
+            socket.write(b);
            // socket.write(newBin);
             //socket.sendMessage(bodyBuff);
 
