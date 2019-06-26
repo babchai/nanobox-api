@@ -54,12 +54,21 @@ server.on('connection', function(socket) { //This is a standard net.Socket
           // var newBin = conv(body, { out:'bytes' })
            // socket.sendMessage(newHex);
            var b = Buffer.from(body , 'utf-8');
-            
-            console.log("send back hex" , newHex );
+            var len  = splitNumber(body.length+2);
+            var buffLen1 = Buffer.from(len[0].toString() , 'utf-8');
+            var buffLen2 = Buffer.from(len[1].toString() , 'utf-8');
+
+            var buffType1 = Buffer.from('0' , 'utf-8');
+            var buffType2 = Buffer.from('1' , 'utf-8');
+
+            var buff = Buffer.concat([buffLen1 , buffLen2, buffType1 , buffType2 , b]);
+
+
+            //console.log("send back hex" , newHex );
             //socket.write(newHex);
 
-            console.log("send back bin" , b );
-            socket.write(b);
+            console.log("send back bin" , buff );
+            socket.write(buff);
            // socket.write(newBin);
             //socket.sendMessage(bodyBuff);
 
