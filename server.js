@@ -76,7 +76,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
            var b = Buffer.from(body , 'utf-8');
             
             console.log("send back hex" , newHex );
-            socket.write(newHex);
+            //socket.write(newHex);
 
             console.log("send back bin" , b );
             socket.write(b);
