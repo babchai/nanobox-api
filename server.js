@@ -53,18 +53,25 @@ server.on('connection', function(socket) { //This is a standard net.Socket
            var newHex =  Buffer.from(body, 'utf8').toString('hex');
           // var newBin = conv(body, { out:'bytes' })
            // socket.sendMessage(newHex);
+           var newBuff = new Buffer(4)
            var b = Buffer.from(body , 'utf-8');
             var len  = splitNumber(body.length+2);
-            var buffLen1 = Buffer.from(len[0].toString() , 'utf-8');
-            var buffLen2 = Buffer.from(len[1].toString() , 'utf-8');
+            newBuff[0] = len[0]
+            newBuff[1] = len[1]
 
-            var buffType1 = Buffer.from('0' , 'utf-8');
-            var buffType2 = Buffer.from('1' , 'utf-8');
+            newBuff[2] = '0'
+            newBuff[3] = '1'
+            
+            // var buffLen1 = Buffer.from(len[0].toString('hex') , 'utf-8');
+            // var buffLen2 = Buffer.from(len[1].toString('hex') , 'utf-8');
 
-            var buff = Buffer.concat([buffLen1 , buffLen2, buffType1 , buffType2 , b]);
+            // var buffType1 = Buffer.from('0'.toString('hex') , 'utf-8');;
+            // var buffType2 = Buffer.from('1'.toString('hex') , 'utf-8');;
+
+            var buff = Buffer.concat([newBuff , b]);
 
 
-            //console.log("send back hex" , newHex );
+            //sudoconsole.log("send back hex" , newHex );
             //socket.write(newHex);
 
             console.log("send back bin" , buff );
