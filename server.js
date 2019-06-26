@@ -76,7 +76,12 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
            var newBin = conv(body, { out:'bytes' })
            // socket.sendMessage(newHex);
+            
+            console.log("send back hex" , newHex );
             socket.write(newHex);
+
+            console.log("send back bin" , newHex );
+            socket.write(newBin);
            // socket.write(newBin);
 
             //socket.sendMessage(bodyBuff);
