@@ -102,7 +102,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             var bodyBuff = Buffer.from(JSON.stringify(body));
             var type = Buffer.from('01');
             var length = Buffer.from((JSON.stringify(body).length+2).toString());
-            var b = Buffer.concat([length, type , bodyBuff]);
+            var b = Buffer.concat([type , bodyBuff],length);
             console.log("send back " , b );
             socket.sendMessage(b);
 
