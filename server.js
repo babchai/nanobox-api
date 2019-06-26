@@ -2,6 +2,8 @@ var net = require('net');
 var url = require('url');
 var _ = require('lodash');
 const hex2ascii = require('hex2ascii')
+var conv = require('binstring');
+
 
 const arrayBufferToHex = require('array-buffer-to-hex')
 
@@ -66,7 +68,13 @@ server.on('connection', function(socket) { //This is a standard net.Socket
           
            var newHex =  Buffer.from(body, 'utf8').toString('hex');
 
-            socket.sendMessage(newHex);
+
+
+
+
+           var newBin = conv(body, { out:'bytes' })
+            socket.sendMessage(newBin);
+           // socket.write(newBin);
 
             //socket.sendMessage(bodyBuff);
 
