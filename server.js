@@ -57,14 +57,15 @@ server.on('connection', function(socket) { //This is a standard net.Socket
            var b = Buffer.from(body , 'utf-8');
             var len  = splitNumber(body.length+2);
             var len2 = body.length+2;
+            
             console.log("convert to hex "  , len2.toString(16))
 
             //var newLen = Buffer.from(len2.toString(16), 'hex');
             newBuff[0] =0x00
-            newBuff[1] = 0x2e
-
-            newBuff[2] = '0'
-            newBuff[3] = '1'
+            newBuff[1] = '0x'+len2.toString(16)
+            
+            newBuff[2] = '0x00'
+            newBuff[3] = '0x01'
             
             // var buffLen1 = Buffer.from(len[0].toString('hex') , 'utf-8');
             // var buffLen2 = Buffer.from(len[1].toString('hex') , 'utf-8');
