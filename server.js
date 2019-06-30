@@ -124,7 +124,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             newBuff[0] =0x00
             newBuff[1] = '0x'+len2.toString(16)
             newBuff[2] = '0x00'
-            newBuff[3] = '0x01'
+            newBuff[3] = '0x03'
 
             var buff = Buffer.concat([ newBuff , b]);
             console.log("send back bin" , buff );
