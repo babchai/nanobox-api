@@ -38,29 +38,19 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             let dataJson = JSON.stringify(ascii);
             console.log("json stringify ==> " , dataJson);
             
-            var successResp = { "code":0,"msg":"connect success","data":{}}
+            //console.log("data ==> " , dataJson.data)
+            if(dataJson.data){
+                var successResp = { "code":0,"msg":"connect success","data":{}}
+                var body = '{"code":0,"msg":"connect success","data":{}}'
+                sockets.push({'soc':socket , 'data' : dataJson.data})
+
+            }
+            else {
+                var successResp = { "code": 0,"msg": "","data":{}}
+                var body = '{"code": 0,"msg": "","data":{}}'
+            }
             var length = Object.keys(successResp).length +2;
-            console.log(length);
-
-            var body = '{ "code":0,"msg":"connect success","data":{}}'
-
-            var bodyBuff = new Buffer(255);
-            var len1 = splitNumber(length)[0].toString();
-            var len2 = splitNumber(length)[0].toString();
-
-
-            bodyBuff.write(len1) //length
-            bodyBuff.write(len2) //length
-
-            bodyBuff.write('0'); //type
-            bodyBuff.write('1'); //type
-
-            bodyBuff.write(body);
-
-             //var bodyBuff = Buffer.from(body);
-
-            var body = '{"code":0,"msg":"connect success","data":{}}'
-            
+            console.log(length);            
 
             var newBuff = new Buffer(4)
             var b = Buffer.from(body , 'utf-8');
@@ -78,9 +68,6 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
             console.log("send back bin" , buff );
             socket.write(buff);
-
-
-            //sockets.push({'soc':socket , 'data' : dataJson.data})
 
         }catch(e){
             console.log("error : " , e);
