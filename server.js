@@ -80,7 +80,7 @@ server.on('connection', function(socket) { //This is a standard net.Socket
             socket.write(buff);
 
 
-            sockets.push({'soc':socket , 'data' : dataJson.data})
+            //sockets.push({'soc':socket , 'data' : dataJson.data})
 
         }catch(e){
             console.log("error : " , e);
