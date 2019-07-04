@@ -34,12 +34,12 @@ server.on('connection', function(socket) { //This is a standard net.Socket
 
             var ascii =   hex2ascii(hex);
             console.log("incoming ascii ==> " , ascii);
-            //j = JSON.parse(ascii);
+            j = JSON.parse(ascii);
             let dataJson = JSON.stringify(ascii);
             console.log("json stringify ==> " , dataJson);
             
-            //console.log("data ==> " , dataJson.data)
-            if(dataJson.data){
+            console.log("data ==> " , j.data)
+            if(j.data){
                 var successResp = { "code":0,"msg":"connect success","data":{}}
                 var body = '{"code":0,"msg":"connect success","data":{}}'
                 sockets.push({'soc':socket , 'data' : dataJson.data})
